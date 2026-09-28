@@ -1,0 +1,173 @@
+%-------------------------
+% OpenApply CV template - Jake's Resume shape (9pt extarticle, ATS-safe, one column).
+%
+% Neutral template. Onboarding rewrites every double-brace UPPER_SNAKE token
+% (FULL_NAME, EMAIL, EXP1_TITLE, ...) with the user's own CV content, and
+% saves the result to the path in profile.cv.tex
+% (default cv/cv.tex, gitignored). Do not put real candidate content here.
+%
+% The line marked "% OPENAPPLY:LOCATION" is the one `cv.mjs build --city X`
+% rewrites for a city variant. Keep the marker on that exact line.
+%
+% Original template: Jake Gutierrez (https://github.com/jakegut/resume), MIT.
+%-------------------------
+
+\documentclass[letterpaper,9pt]{extarticle}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Keep the PDF text layer machine readable (ATS parsers read this, not glyphs).
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands (Jake macros, required by src/tailor/cv.mjs validation)
+%-------------------------
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape {{FULL_NAME}}} \\ \vspace{1pt}
+    \small {{LOCATION}} % OPENAPPLY:LOCATION
+    \\ \vspace{1pt}
+    \small {{PHONE}} $|$ \href{mailto:{{EMAIL}}}{\underline{{{EMAIL}}}} $|$
+    \href{https://{{LINKEDIN}}}{\underline{{{LINKEDIN}}}} $|$
+    \href{https://{{GITHUB}}}{\underline{{{GITHUB}}}}
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {{{EDU_SCHOOL}}}{{{EDU_LOCATION}}}
+      {{{EDU_DEGREE}}}{{{EDU_DATES}}}
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {{{EXP1_TITLE}}}{{{EXP1_DATES}}}
+      {{{EXP1_ORG}}}{{{EXP1_LOCATION}}}
+      \resumeItemListStart
+        \resumeItem{{{EXP1_BULLET1}}}
+        \resumeItem{{{EXP1_BULLET2}}}
+        \resumeItem{{{EXP1_BULLET3}}}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {{{EXP2_TITLE}}}{{{EXP2_DATES}}}
+      {{{EXP2_ORG}}}{{{EXP2_LOCATION}}}
+      \resumeItemListStart
+        \resumeItem{{{EXP2_BULLET1}}}
+        \resumeItem{{{EXP2_BULLET2}}}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{{{PROJ1_NAME}}} $|$ \emph{{{PROJ1_STACK}}}}{{{PROJ1_DATES}}}
+          \resumeItemListStart
+            \resumeItem{{{PROJ1_BULLET1}}}
+            \resumeItem{{{PROJ1_BULLET2}}}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{{{PROJ2_NAME}}} $|$ \emph{{{PROJ2_STACK}}}}{{{PROJ2_DATES}}}
+          \resumeItemListStart
+            \resumeItem{{{PROJ2_BULLET1}}}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: {{SKILLS_LANGUAGES}}} \\
+     \textbf{Frameworks}{: {{SKILLS_FRAMEWORKS}}} \\
+     \textbf{Tools}{: {{SKILLS_TOOLS}}} \\
+    }}
+ \end{itemize}
+
+%-------------------------------------------
+\end{document}
