@@ -66,6 +66,8 @@ Do not work around them.
 | `node src/record/status.mjs` | Print the funnel: book, eligible, pool, filled, applied. |
 | `node src/tailor/cv.mjs build [--city X]` | Build the CV PDF from `cv/cv.tex`. |
 | `node src/tailor/cv.mjs check <pdf>` | Check a CV PDF for ATS problems. |
+| `node src/tailor/letter.mjs <company> --role "<role>" --hook "<line>" [--city X]` | Build a cover letter PDF from the golden `cover-letter` answer. Exit 3 means the hook is missing or the text failed a check. |
+| `node src/tailor/letter.mjs <company> --role "<role>" --hook "<line>" [--city X]` | Build a cover letter PDF from the golden `cover-letter` answer. Exit 3 means the hook is missing or the text failed a check. |
 | `node src/shared/humanizer.mjs <file\|->` | Check text for AI-sounding phrases, em dashes, and forbidden facts. |
 | `node src/answers/answers.mjs find "<question>"` | Find the closest golden answer for a question. |
 | `node src/answers/answers.mjs swap <id> <company> [--hook "<line>"]` | Print a golden answer for a company. Exit 3 means the per-company hook is still missing. |

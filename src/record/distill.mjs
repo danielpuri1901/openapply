@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // distill.mjs - the read half of the fill flywheel: which traps have fired
-// enough times to deserve a written rule, and are not yet in docs/ats-notes.md.
+// enough times to deserve a written rule, and are not yet in skills/ats-notes.md.
 //
 // It does not write rules; turning a note into a rule is a judgment call. It
 // only tells you which ones are owed one, which is the step that keeps slipping
@@ -13,7 +13,7 @@ import { ROOT } from '../profile.mjs';
 import { readLog, TRAPS } from './log.mjs';
 
 export const RECUR = 2;
-const DOCS_FILE = path.join(ROOT, 'docs', 'ats-notes.md');
+const DOCS_FILE = path.join(ROOT, 'skills', 'ats-notes.md');
 
 export function tokensOf(note) {
   const out = new Set();
@@ -85,7 +85,7 @@ function main() {
   const owed = gaps.filter((g) => !g.written);
 
   console.log(`${rows.length} fills logged. ${gaps.length} traps have fired ${RECUR}+ times.\n`);
-  console.log(owed.length ? 'recurring and not in docs/ats-notes.md - write these first:' : 'every recurring trap is written down.');
+  console.log(owed.length ? 'recurring and not in skills/ats-notes.md - write these first:' : 'every recurring trap is written down.');
   for (const g of owed) {
     console.log(`  ${String(g.n).padStart(2)}x ${g.code} on ${g.ats} (${[...new Set(g.where)].join(', ')})`);
     if (TRAPS[g.code]) console.log(`        ${TRAPS[g.code]}`);

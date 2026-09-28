@@ -14,10 +14,12 @@ Check for each of these. Report what is missing before you continue.
 
 ## 2. Get the CV
 
-Ask the user to paste their current CV text, or upload a CV file.
-Use `cv/template.tex` as the base structure.
-Fill it with the user's real content and save the result as `cv/cv.tex`.
-Keep the template's one-column, ATS-safe layout. Do not add columns, tables, or icons.
+Ask the user to drop their CV file (PDF or DOCX) into the chat, or give a file path.
+Read the file. For a PDF, you can also run `pdftotext <file> -` to get the text.
+Rebuild it in `cv/template.tex`: replace every double-brace token with the user's real content, and save the result as `cv/cv.tex`.
+Keep the template's one-column, ATS-safe layout. Do not add columns, tables, icons, or photos.
+Copy facts exactly. Do not improve numbers, titles, or dates. Ask when something is unclear.
+Keep the `% OPENAPPLY:LOCATION` line. It lets the tool build one CV per target city.
 
 ## 3. Build and check the CV
 
@@ -26,6 +28,10 @@ Run `node src/tailor/cv.mjs check <pdf>` on the result.
 Fix anything the check flags (missing section, more than two pages, contact info not recoverable as text) before you continue.
 
 ## 4. Interview for the profile
+
+First, pre-fill every field you can from the CV: name, contact details, links, education, current company, years of experience.
+Show the user the pre-filled values and ask them to confirm or correct them in one reply.
+Then ask only for what a CV does not hold.
 
 Ask the user for each field below, in this order.
 Ask one group at a time. Use `profile.example.md` as the field reference.
@@ -49,7 +55,9 @@ This file is gitignored. It never leaves the user's machine through git.
 
 ## 6. Collect golden answers
 
-Ask the user for 2 to 3 answers to common questions: why this company, a technical story, why a startup.
+Ask the user for 3 to 4 answers in their own words: why this company, a technical story, why a startup, and a short cover letter (under 250 words).
+Each one goes in `answers/<id>.md`, in the same shape as `answers.example/`. Use `{company}`, `{role}`, and `{hook}` where the text changes per company.
+The cover letter answer must have the id `cover-letter`. `node src/tailor/letter.mjs` builds letter PDFs from it.
 Use `answers.example/` as the shape reference (front matter: `id`, `question`, `aliases`, `status`, `approved`, `reuse_note`).
 Write each answer as its own file in `answers/` (gitignored).
 Run `node src/shared/humanizer.mjs -` on each answer before you save it as golden.

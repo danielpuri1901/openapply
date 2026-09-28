@@ -13,3 +13,4 @@ node_modules/
 *.log
 *.bak-*
 tmp/
+!cv/cover-letter.template.tex

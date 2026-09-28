@@ -62,7 +62,7 @@ export function detectEngine() {
 }
 
 // Compiles texPath (inside outDir) to a PDF of the same base name in outDir.
-function compile(engine, texPath, outDir) {
+export function compile(engine, texPath, outDir) {
   const texDir = path.dirname(texPath);
   const base = path.basename(texPath, '.tex');
   let compilePath = texPath;

@@ -1,0 +1,29 @@
+% OpenApply cover letter template. `node src/tailor/letter.mjs` fills the
+% double-brace tokens from profile.md and the golden `cover-letter` answer.
+% Plain one-column text so ATS parsers read it cleanly.
+\documentclass[letterpaper,11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em}
+\pagestyle{empty}
+% Map ligatures (fi, fl) back to plain letters so ATS text extraction reads them.
+\input{glyphtounicode}
+\pdfgentounicode=1
+\begin{document}
+
+{\large\textbf{{{NAME}}}}\\
+{{EMAIL}} \textbar{} {{PHONE}} \textbar{} {{LOCATION}}
+
+{{DATE}}
+
+{{COMPANY}} hiring team
+
+{{BODY}}
+
+Best regards,\\
+{{NAME}}
+
+\end{document}

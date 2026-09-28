@@ -59,6 +59,10 @@ Never reuse a tab from an earlier posting.
    If no real source exists, leave the hook out and flag the answer for the human. Exit code 3 means the hook is missing.
    With no golden answer, draft from `profile.md` only and mark it NEW.
    Check every answer with `node src/shared/humanizer.mjs -`, then type it in.
+5. If the form has a cover letter upload slot, build a letter and upload it:
+   `node src/tailor/letter.mjs <company> --role "<role>" --hook "<line>" --city "<job location>"`.
+   Use the same hook as the essay answers. Exit code 3 means the hook is missing or the text failed the humanizer. Fix that first; never upload a letter with a placeholder.
+   A cover letter slot that is optional still gets a letter. It is a cheap signal of effort.
 
 ## 6. Commit and verify
 
