@@ -46,16 +46,19 @@ Confirm the connected browser is correct, then open one fresh tab.
 For each GO posting, open one fresh tab on the posting URL.
 Never reuse a tab from an earlier posting.
 
-1. Run `node src/fill/snippet.mjs survey` and paste the output with `javascript_tool` to read every field.
-2. Run `node src/fill/snippet.mjs fill-facts` to fill the fact fields from the profile.
-3. For an essay field, find the golden answer with `node src/answers/answers.mjs find "<question>"`.
+1. Upload the CV variant that matches the posting's city first. Build it if it does not exist yet: `node src/tailor/cv.mjs build --city "<city>"`.
+   Upload it with the Claude in Chrome file upload tool, into the real Resume field, not the "Autofill from resume" field.
+   The ATS resume parser then overwrites Name, Email, Phone, and Location. That is why the upload comes first.
+2. Run `node src/fill/snippet.mjs survey` and paste the output with `javascript_tool` to read every field.
+3. Run `node src/fill/snippet.mjs fill-facts --city "<job location>"` to fill the fact fields from the profile. This also repairs what the parser overwrote.
+   Fill any location autocomplete by hand: click it, type the city, wait two seconds, and click the exact option.
+4. For an essay field, find the golden answer with `node src/answers/answers.mjs find "<question>"`.
    Print it for this company with `node src/answers/answers.mjs swap <id> <company> --hook "<line>"`.
    The hook is one line about this company from one real source you opened: a post, a podcast, or funding news.
    Use a research subagent to find it, and copy titles exactly as shown.
    If no real source exists, leave the hook out and flag the answer for the human. Exit code 3 means the hook is missing.
    With no golden answer, draft from `profile.md` only and mark it NEW.
    Check every answer with `node src/shared/humanizer.mjs -`, then type it in.
-4. Upload the CV variant that matches the posting's city. Build it first if it does not exist yet: `node src/tailor/cv.mjs build --city "<city>"`.
 
 ## 6. Commit and verify
 

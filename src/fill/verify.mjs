@@ -58,6 +58,15 @@ export function verify(dump, { profile, city } = {}) {
   if (phoneF && phoneF.value && id.phone && digits(phoneF.value) !== digits(id.phone)) blocks.push(`Phone digits are "${digits(phoneF.value)}", expected "${digits(id.phone)}"`);
   else if (phoneF && phoneF.value) passes.push('phone');
 
+  // The resume parser rewrites Location after upload; a value without the
+  // profile's current city is flagged for the human, never auto-accepted.
+  const locF = find(/^location$|current location|where are you (based|located)/i)
+    || fields.find((f) => /start typing/i.test(f.label || '') && f.value);
+  const homeCity = String(profile.location?.current || '').split(',')[0].trim().toLowerCase();
+  if (locF && !locF.value) flags.push('Location is empty');
+  else if (locF && homeCity && !String(locF.value).toLowerCase().includes(homeCity)) flags.push(`Location is "${locF.value}", profile says "${profile.location.current}" (resume parser overwrite?)`);
+  else if (locF) passes.push('location');
+
   const resumeF = fields.find((f) => f.kind === 'file' && /resume|cv/i.test(f.label || ''));
   if (resumeF && !resumeF.value) blocks.push('resume field is EMPTY');
   else if (resumeF) passes.push(`resume = ${resumeF.value}`);

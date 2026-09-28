@@ -2,7 +2,7 @@
 
 OpenApply finds job postings that match your profile.
 It fills the application forms in your Chrome browser.
-It stops before it submits, so you stay in control.
+By default it stops before Submit, so you stay in control.
 One real run of this loop filled about 100 applications in two working days.
 
 ## Safety
@@ -15,10 +15,19 @@ One real run of this loop filled about 100 applications in two working days.
 - Your data stays on your machine.
   Your profile, your answers, and your application history are never committed to git.
 
+## Your responsibility
+
+You are the applicant.
+Everything sent in your name must be true, and every answer must be your own words.
+Golden answers are text you wrote or approved.
+Some employers ask you not to use AI tools in an application. Follow what each posting says.
+Respect the terms of each job site. Apply only to roles you want and would accept.
+OpenApply reads public job board APIs. One of them, the Ashby form pre-screen, is not an official public API. If it changes, the pre-screen routes every Ashby form to your review.
+
 ## Quickstart
 
 1. Clone this repository.
-2. Run `npm install`.
+2. Run `npm install`, then `npm run doctor` to check your setup.
 3. Install the Claude in Chrome browser extension and connect it to the Chrome profile you use for job applications.
 4. Open Claude Code in this folder.
 5. Say: "read AGENTS.md".
