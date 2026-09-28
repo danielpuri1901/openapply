@@ -14,8 +14,9 @@ Do this when the human edits a drafted answer live in a form, or wants to promot
 
 ## Reuse rule
 
-A golden answer is reused by swapping the company name only.
-Run `node src/answers/answers.mjs swap <id> <company>`.
+A golden answer is reused by swapping the company name and the per-company hook only.
+Run `node src/answers/answers.mjs swap <id> <company> --hook "<line>"`.
+Never reuse a hook across companies. A hook is only true for the company it was written about.
 Do not rewrite an approved answer's wording.
 If an answer no longer fits a new question, draft a new one. Do not force reuse.
 

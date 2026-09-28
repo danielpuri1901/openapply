@@ -24,6 +24,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, loadProfile } from '../profile.mjs';
 import { openDb, norm, markApplied } from '../discover/db.mjs';
+import { release as releaseLease } from './leases.mjs';
 
 export const LOG_FILE = path.join(ROOT, 'data', 'fill-log.jsonl');
 export const APPLICATIONS_DIR = path.join(ROOT, 'data', 'applications');
@@ -183,10 +184,20 @@ function main() {
     const found = findDiscovered(db, company, url);
     const rec = recordApplied(company, url, { ats: found?.ats });
     if (found) markApplied(db, company, found.ats, found.role_id);
+    releaseLease(leaseKey(company, url), 'delivered');
     console.log(JSON.stringify(rec));
     return;
   }
-  console.error('usage: log.mjs <fill <json>|applied "<Company>" <url>>');
+  // `skip` ends a posting without applying (closed, blocked, human said no),
+  // so its lease does not hold the company for the full lease window.
+  if (cmd === 'skip') {
+    const [company, url, ...why] = rest;
+    if (!company || !url) { console.error('usage: log.mjs skip "<Company>" <url> [reason]'); process.exit(2); }
+    releaseLease(leaseKey(company, url), 'released');
+    console.log(JSON.stringify({ skipped: company, url, reason: why.join(' ') || null }));
+    return;
+  }
+  console.error('usage: log.mjs <fill <json>|applied "<Company>" <url>|skip "<Company>" <url> [reason]>');
   process.exit(2);
 }
 

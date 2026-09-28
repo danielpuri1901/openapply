@@ -4,7 +4,7 @@
 
 OpenApply finds job postings that match your profile.
 It fills the application forms in your Chrome browser.
-It stops before it submits, so you stay in control.
+By default it stops before Submit, so you stay in control.
 It runs inside Claude Code.
 It never invents a fact. Every fact it types comes from `profile.md` or `answers/`.
 
@@ -60,12 +60,13 @@ Do not work around them.
 | `node src/fill/snippet.mjs <survey\|fill-facts\|commit\|readback> [--city X]` | Print a browser script to paste with `javascript_tool`. |
 | `node src/fill/verify.mjs <dump.json>` | Check a form dump against the profile. Print PASS or a FLAG list. |
 | `node src/record/log.mjs fill <json>` | Append one fill record to `fill-log.jsonl`. |
-| `node src/record/log.mjs applied <company> <url>` | Record a submitted application. |
+| `node src/record/log.mjs applied <company> <url>` | Record a submitted application and release its lease. |
+| `node src/record/log.mjs skip <company> <url> [reason]` | End a posting without applying and release its lease. |
 | `node src/record/status.mjs` | Print the funnel: book, eligible, pool, filled, applied. |
 | `node src/tailor/cv.mjs build [--city X]` | Build the CV PDF from `cv/cv.tex`. |
 | `node src/tailor/cv.mjs check <pdf>` | Check a CV PDF for ATS problems. |
 | `node src/shared/humanizer.mjs <file\|->` | Check text for AI-sounding phrases, em dashes, and forbidden facts. |
 | `node src/answers/answers.mjs find "<question>"` | Find the closest golden answer for a question. |
-| `node src/answers/answers.mjs swap <id> <company>` | Print a golden answer with the company name swapped in. |
+| `node src/answers/answers.mjs swap <id> <company> [--hook "<line>"]` | Print a golden answer for a company. Exit 3 means the per-company hook is still missing. |
 
 See `skills/onboard.md`, `skills/apply.md`, `skills/tune.md`, and `skills/ats-notes.md` for detail.

@@ -36,6 +36,8 @@ Read the result.
 - WARN: read the warning and proceed only if it is safe to do so.
 - REFUSE: skip this posting. Do not open a tab.
 
+If you drop a posting after GO (closed, blocked, the human says no), run `node src/record/log.mjs skip <company> <url> <reason>` to release its lease.
+
 Preflight also prints a browser checklist.
 Confirm the connected browser is correct, then open one fresh tab.
 
@@ -46,7 +48,13 @@ Never reuse a tab from an earlier posting.
 
 1. Run `node src/fill/snippet.mjs survey` and paste the output with `javascript_tool` to read every field.
 2. Run `node src/fill/snippet.mjs fill-facts` to fill the fact fields from the profile.
-3. For an essay field, find or draft the answer with `node src/answers/answers.mjs find "<question>"`, check it with `node src/shared/humanizer.mjs -`, then type it in.
+3. For an essay field, find the golden answer with `node src/answers/answers.mjs find "<question>"`.
+   Print it for this company with `node src/answers/answers.mjs swap <id> <company> --hook "<line>"`.
+   The hook is one line about this company from one real source you opened: a post, a podcast, or funding news.
+   Use a research subagent to find it, and copy titles exactly as shown.
+   If no real source exists, leave the hook out and flag the answer for the human. Exit code 3 means the hook is missing.
+   With no golden answer, draft from `profile.md` only and mark it NEW.
+   Check every answer with `node src/shared/humanizer.mjs -`, then type it in.
 4. Upload the CV variant that matches the posting's city. Build it first if it does not exist yet: `node src/tailor/cv.mjs build --city "<city>"`.
 
 ## 6. Commit and verify

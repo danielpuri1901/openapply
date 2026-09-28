@@ -7,9 +7,9 @@ aliases:
   - "what interests you about {company}"
 status: golden
 approved: 2026-09-20
-reuse_note: "One real hook, then the proof story led by the metric, then a short close. No mission-statement ending."
+reuse_note: "Line 1 is a per-company hook from ONE real source you opened (post, podcast, funding news). Never reuse a hook across companies. Then the proof story led by the metric, then a short close. No mission-statement ending."
 ---
 
-I read {company}'s Series C announcement and the founder's note on why the team ships in small pods.
+{hook}
 At Example Labs I built an internal tool that cut report preparation from two days to two hours, by replacing a manual weekly export with a scheduled pipeline.
-That is the kind of narrow, measurable fix I want to keep making, and {company}'s pod structure is where I can do it fastest.
+That is the kind of narrow, measurable fix I want to keep making at {company}.

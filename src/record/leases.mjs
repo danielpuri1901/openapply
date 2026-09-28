@@ -20,12 +20,12 @@ function write(file, state) {
 }
 
 // due = safe to claim: no record, a crashed claim past the lease window, or a
-// previously failed attempt. A live claim or a delivered result is never due.
+// previously failed or released attempt. A live claim or a delivered result is never due.
 export function due(key, { file = LEASES_FILE, now = Date.now() } = {}) {
   const rec = read(file)[key];
   if (!rec) return true;
   if (rec.status === 'claimed' && now - rec.at > LEASE_MS) return true;
-  if (rec.status === 'failed') return true;
+  if (rec.status === 'failed' || rec.status === 'released') return true;
   return false;
 }
 
