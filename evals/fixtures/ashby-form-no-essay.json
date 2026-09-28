@@ -1,0 +1,19 @@
+{
+  "data": {
+    "jobPosting": {
+      "applicationForm": {
+        "sections": [
+          {
+            "fieldEntries": [
+              { "field": { "title": "Full Name", "type": "Text" }, "isRequired": true },
+              { "field": { "title": "Email", "type": "Email" }, "isRequired": true },
+              { "field": { "title": "Resume", "type": "File" }, "isRequired": true },
+              { "field": { "title": "LinkedIn URL", "type": "Text" }, "isRequired": false },
+              { "field": { "title": "Additional notes", "type": "LongText" }, "isRequired": false }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

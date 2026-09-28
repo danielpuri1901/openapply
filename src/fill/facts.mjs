@@ -97,8 +97,12 @@ export function buildYesNoRules(profile, { city } = {}) {
   add('currently enrolled|full.?time education', 'i', ongoing ? 'Yes' : 'No');
   if (region) add('authori[sz]ed|legal(ly)? right|unrestricted work', 'i', region.authorized ? 'Yes' : 'No');
   add('college degree|bachelor', 'i', edu.length ? 'Yes' : 'No');
-  add('willing to relocate|open to relocat|\\brelocat', 'i', loc.willing_to_relocate ? 'Yes' : 'No');
-  add('in.?office|on.?site|in.?person|hybrid|come into the office', 'i', loc.in_office_ok ? 'Yes' : 'No');
+  // Direct relocation questions first, then in-office, then any other "relocat"
+  // mention: "work from our office (we offer relocation assistance)" asks about
+  // the office, and the relocation words are only context.
+  add('willing to relocate|open to relocat', 'i', loc.willing_to_relocate ? 'Yes' : 'No');
+  add('in.?office|on.?site|in.?person|hybrid|come into the office|out of our office', 'i', loc.in_office_ok ? 'Yes' : 'No');
+  add('\\brelocat', 'i', loc.willing_to_relocate ? 'Yes' : 'No');
   return rules;
 }
 
