@@ -1,0 +1,15 @@
+# Your data. Never committed.
+profile.md
+answers/
+cv/*
+!cv/template.tex
+data/
+output/
+.env
+
+# Tooling
+node_modules/
+.DS_Store
+*.log
+*.bak-*
+tmp/

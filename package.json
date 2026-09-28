@@ -1,0 +1,34 @@
+{
+  "name": "openapply",
+  "version": "0.1.0",
+  "description": "Job-application agent that runs inside Claude Code. It finds roles, fills applications in your Chrome, and stops for your review.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "test": "node --test \"src/**/*.test.mjs\" \"evals/**/*.test.mjs\"",
+    "lint": "eslint .",
+    "check": "npm run lint && npm test",
+    "add-company": "node src/discover/add-company.mjs",
+    "scrape": "node src/discover/scrape.mjs",
+    "pool": "node src/screen/pool.mjs",
+    "preflight": "node src/fill/preflight.mjs",
+    "snippet": "node src/fill/snippet.mjs",
+    "verify": "node src/fill/verify.mjs",
+    "log": "node src/record/log.mjs",
+    "status": "node src/record/status.mjs",
+    "cv": "node src/tailor/cv.mjs",
+    "humanize": "node src/shared/humanizer.mjs",
+    "answers": "node src/answers/answers.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0"
+  }
+}
