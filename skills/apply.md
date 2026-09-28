@@ -91,9 +91,15 @@ Show the human any NEW-flagged answer first.
 
 Default: the human clicks Submit on every tab.
 
-If `submit.auto_submit_no_essay` is `true`:
+If `submit.auto_submit_no_essay` is `true` (experimental):
 
-- The agent may submit a no-essay form, but only after the reviewer returns PASS and the human says "yes" once for the whole batch.
+- The agent may submit a no-essay form only when all of these hold:
+  1. `verify` printed PASS with no flags.
+  2. The reviewer subagent returned PASS on the dump.
+  3. You took a screenshot of the whole form and checked it against the dump. Fieldset questions and the uploaded file are not always in the dump.
+  4. You showed the human the list of tabs in the batch (company, role, every Yes/No answer), and the human said "yes" to that list.
+- Scroll the Submit button into view, take a screenshot, and click it by its element reference, not by guessed coordinates.
+- Confirm the success page and save its URL or text in the fill-log `notes` for that form.
 - Essay forms are still always submitted by the human.
 
 Assign each tab to one submitter, agent or human. Do not let the other one act on that tab.

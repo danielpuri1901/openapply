@@ -22,7 +22,8 @@
     "cv": "node src/tailor/cv.mjs",
     "humanize": "node src/shared/humanizer.mjs",
     "answers": "node src/answers/answers.mjs",
-    "doctor": "node src/doctor.mjs"
+    "doctor": "node src/doctor.mjs",
+    "seed": "node src/discover/seed.mjs"
   },
   "dependencies": {
     "js-yaml": "^4.1.0"

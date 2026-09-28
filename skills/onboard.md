@@ -54,10 +54,14 @@ Use `answers.example/` as the shape reference (front matter: `id`, `question`, `
 Write each answer as its own file in `answers/` (gitignored).
 Run `node src/shared/humanizer.mjs -` on each answer before you save it as golden.
 
-## 7. Add the first companies
+## 7. Load companies
 
-Ask the user for 2 to 3 companies they want to apply to.
+Run `node src/discover/seed.mjs` to load the starter list in `seeds/boards.txt` (about 350 public job boards, mostly AI and software startups in the US and Europe).
+Ask the user for any companies they want that are not on the list.
 For each one, run `node src/discover/add-company.mjs <careers-url>`.
+Run `node src/discover/scrape.mjs`. The first scrape takes about 5 minutes.
+Run `node src/screen/pool.mjs --limit 40` and show the user the funnel.
+Onboarding is only done when the pool is not empty. If it is empty, widen `search` in `profile.md` with the user and run the pool again.
 
 ## 8. Dry run
 

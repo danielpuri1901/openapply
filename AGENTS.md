@@ -53,6 +53,7 @@ Do not work around them.
 
 | Command | What it does |
 |---|---|
+| `node src/discover/seed.mjs` | Load the starter list of about 350 job boards into the book. |
 | `node src/discover/add-company.mjs <careers-url or ats-board-url>` | Resolve a company's ATS board and add it to the book. |
 | `node src/discover/scrape.mjs` | Read every board in the book, diff it, gate new roles, store them. |
 | `node src/screen/pool.mjs [--limit N]` | Build the eligible pool. Pre-screen each form through the ATS API. Write `output/pool.json`. Print the funnel. |
