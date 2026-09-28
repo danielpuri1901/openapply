@@ -23,9 +23,13 @@ export const KINDS = Object.keys(BROWSER_FILE);
 export function buildSnippet(kind, { city, profile = loadProfile() } = {}) {
   const file = BROWSER_FILE[kind];
   if (!file) throw new Error(`unknown snippet "${kind}". Use one of: ${KINDS.join(', ')}`);
-  const source = readFileSync(path.join(here, file), 'utf8').trim();
-  const facts = buildFacts(profile, { city });
-  facts.banned = bannedTerms(profile);
+  // Full-line comments are for maintainers; the pasted copy drops them to save tokens.
+  const source = readFileSync(path.join(here, file), 'utf8')
+    .split('\n').filter((l) => !/^\s*\/\//.test(l)).join('\n').trim();
+  // Each script gets only the data it reads: commit needs none, dumps need the banned list.
+  let facts = {};
+  if (kind === 'fill-facts') facts = buildFacts(profile, { city });
+  if (kind === 'survey' || kind === 'readback') facts = { city: city || null, banned: bannedTerms(profile) };
   return `(${source})(${JSON.stringify(facts)})`;
 }
 

@@ -19,6 +19,8 @@ function words(s) {
 // "Australia" - a real regression once let a geo tier match a substring.
 // Pass the posting's fullest location string (city and country when both are
 // known); a bare city name will not match a country-level keyword.
+const escapeRe = (t) => String(t).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 export function regionFor(city, workAuthorization = []) {
   const cityWords = new Set(words(city));
   if (!cityWords.size) return null;
@@ -39,7 +41,9 @@ export function buildTextRules(profile, { city } = {}) {
   const edu = (profile.education || [])[0] || {};
   const region = regionFor(city, profile.work_authorization || []);
   const comp = region && profile.compensation ? profile.compensation[region.region] : null;
-  const locationAnswer = city && loc.answer ? loc.answer.replace('{city}', city) : loc.answer;
+  // Without a job city, "{city}" cannot be filled, so fall back to the plain current location.
+  const locationAnswer = loc.answer && city ? loc.answer.replace('{city}', city.split(',')[0].trim())
+    : (loc.answer && !loc.answer.includes('{city}') ? loc.answer : loc.current);
 
   const rules = [];
   const add = (source, flags, value) => { if (value) rules.push({ source, flags, value }); };
@@ -70,7 +74,20 @@ export function buildYesNoRules(profile, { city } = {}) {
   const rules = [];
   const add = (source, flags, value) => { if (value != null) rules.push({ source, flags, value }); };
 
-  // Specific: asks about authorization, worded with sponsorship words.
+  // Most specific: the label itself names a region ("authorized to work in the
+  // United States"). The label wins over the job's city. Keywords shorter than
+  // 3 characters ("us", "eu") are skipped here: they match ordinary words.
+  for (const wa of profile.work_authorization || []) {
+    const kws = (wa.keywords || []).filter((k) => k.length >= 3).map(escapeRe);
+    if (!kws.length) continue;
+    // Letter/digit guards instead of \\b, so a dotted keyword like "u.s." still matches.
+    const scope = `^(?=.*(?<![a-z0-9])(?:${kws.join('|')})(?![a-z0-9]))`;
+    add(`${scope}.*without (visa |any )?sponsorship`, 'i', wa.authorized && !wa.needs_sponsorship ? 'Yes' : 'No');
+    add(`${scope}.*(spons?or|visa|immigration)`, 'i', wa.needs_sponsorship ? 'Yes' : 'No');
+    add(`${scope}.*(authori[sz]ed|legal(ly)? right|eligible to work|unrestricted work)`, 'i', wa.authorized ? 'Yes' : 'No');
+  }
+
+  // Next: the label names no region, so use the region of the job's city.
   if (region) add('without (visa |any )?sponsorship', 'i', region.authorized && !region.needs_sponsorship ? 'Yes' : 'No');
   // Specific: needing a relocation package is a different question than being
   // willing to relocate, and it must be checked before the bare "relocat" rule.

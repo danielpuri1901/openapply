@@ -103,6 +103,7 @@ async (FACTS) => {
   document.querySelectorAll('input,textarea,select').forEach((e) => {
     if (e.closest('.ashby-application-form-field-entry')) return;
     if (['hidden', 'checkbox', 'radio', 'file', 'submit', 'button'].includes(e.type)) return;
+    if (/recaptcha/i.test(e.name || e.id || '')) return;
     const label = clean((e.labels && e.labels[0] && e.labels[0].innerText) || e.getAttribute('aria-label') || e.placeholder || e.name || '');
     if (!label) return;
     if (e.tagName === 'SELECT') { fillSelect(e, label); return; }

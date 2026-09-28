@@ -36,9 +36,18 @@ test('yesNoRules: relocation-assistance rule precedes the bare relocate rule', (
   assert.ok(iAssist < iBare);
 });
 
-test('yesNoRules: sponsorship rules are omitted (not fabricated) with no region match', () => {
+test('yesNoRules: with no region match, only label-scoped sponsorship rules exist (never a bare guess)', () => {
   const rules = buildYesNoRules(profile, { city: 'Singapore' });
-  assert.ok(!rules.some((r) => r.source.includes('spons?or')));
+  const bare = rules.filter((r) => r.source.includes('spons?or') && !r.source.startsWith('^(?='));
+  assert.equal(bare.length, 0);
+});
+
+test('yesNoRules: a region named in the label wins over the job city', () => {
+  const rules = buildYesNoRules(profile, { city: 'Singapore' }).map((r) => [new RegExp(r.source, r.flags), r.value]);
+  const answer = (label) => (rules.find(([re]) => re.test(label)) || [])[1];
+  const us = profile.work_authorization.find((w) => w.keywords.includes('united states'));
+  assert.equal(answer('Will you require sponsorship to work in the United States?'), us.needs_sponsorship ? 'Yes' : 'No');
+  assert.equal(answer('Will you require sponsorship to join us?'), undefined);
 });
 
 test('yesNoRules: reflects the matched region correctly for authorized/sponsor', () => {

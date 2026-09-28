@@ -26,13 +26,15 @@ location:
 
 # One entry per country or region you might work in.
 # The Yes/No filler answers "authorized to work in X" and "need sponsorship in X" from this list.
+# Keywords match the question text first ("...in the United States?"), then the job's location.
+# List the country names AND the cities you target, so a job in "San Francisco, CA" finds its region.
 work_authorization:
   - region: "EU"
     keywords: ["eu", "european union", "portugal", "spain", "france", "netherlands", "germany"]
     authorized: true
     needs_sponsorship: false
   - region: "US"
-    keywords: ["us", "u.s.", "united states", "america"]
+    keywords: ["us", "u.s.", "united states", "america", "new york", "san francisco", "bay area"]
     authorized: false
     needs_sponsorship: true
 

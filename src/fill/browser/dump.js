@@ -3,7 +3,8 @@
 // a survey and a readback of a filled form differ only in when you run it.
 //
 // Read-back rules baked in:
-//   - Ashby Yes/No BUTTON pairs: .checked lies, selection is the background colour.
+//   - Ashby Yes/No BUTTON pairs: .checked lies. The selected button carries an
+//     `_active_` class. Colour is only a fallback: themed forms paint both buttons.
 //   - real input[type=radio]: .value is "on" on every option, read .checked.
 //   - react-select comboboxes: the committed value is rendered text, not .value.
 //
@@ -28,7 +29,9 @@ async (FACTS) => {
       choices.push({
         kind: 'yesno-button',
         question: clean(host.innerText).slice(0, 110),
-        selected: btns.filter((b) => getComputedStyle(b).backgroundColor !== 'rgba(0, 0, 0, 0)').map((b) => clean(b.innerText)),
+        selected: (btns.some((b) => /_active_/.test(b.className))
+          ? btns.filter((b) => /_active_/.test(b.className))
+          : btns.filter((b) => getComputedStyle(b).backgroundColor !== 'rgba(0, 0, 0, 0)')).map((b) => clean(b.innerText)),
         required: /\*/.test(host.innerText || ''),
       });
     } else {
