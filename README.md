@@ -7,8 +7,8 @@ You fill in one file about yourself.
 The agent does the searching, the screening, and the form filling.
 You read what it wrote and click Submit.
 
-One real run of this loop sent about 100 applications in two working days.
-The rules in this repo come from that run.
+The rules in this repository come from application sessions and recorded form failures.
+The default workflow leaves the final submission to the applicant.
 
 ## How it works
 
@@ -29,7 +29,7 @@ flowchart LR
 4. **Fill.** It opens each form in your Chrome and fills it from your profile. Essay answers come from your own approved answers, with the company name swapped in.
 5. **Verify.** It reads every field back and checks it against your profile. A wrong answer blocks the form.
 6. **Submit.** You review each tab and click Submit.
-7. **Record.** It logs every application, so it never applies to the same role twice and respects per-company limits.
+7. **Record.** It logs every application, to check for repeated roles and enforce per-company limits.
 
 ## Quickstart
 
@@ -58,7 +58,9 @@ After setup, start each session with "read AGENTS.md" and then "run the loop".
 | Three or four answers in your own words | `answers/` | "Why this company", your best technical story, "why a startup", and a short cover letter. The agent reuses them and swaps in the company name. |
 
 All three are gitignored.
-Your data never leaves your machine through this repo.
+Git ignores these personal files.
+The coding agent and browser can transmit data to their providers and the job site during use.
+Local storage does not mean every step runs offline.
 
 ## Your first session, step by step
 
@@ -70,7 +72,7 @@ The agent runs this for you from `skills/onboard.md`. It takes about 30 minutes.
    It builds the PDF and runs an ATS check: the text must extract cleanly, the sections must be there, your contact details must be readable, and the CV must be one or two pages.
    It copies your facts exactly. It never improves a number or a title.
 3. **Profile.** The agent pre-fills most of `profile.md` from your CV and shows it to you to confirm.
-   Then it asks only what a CV does not say: cities, work authorization, relocation, target titles, salary, and limits.
+   Then it asks only what a CV does not say: cities, work authorization, relocation, target titles and salary, plus application limits.
 4. **Your answers.** You write three or four short answers: why this company, a technical story, why a startup, and a cover letter.
    These are your words. The agent reuses them. It never invents new claims.
 5. **Companies.** The agent loads the starter list of about 350 job boards, scrapes them, and shows you how many roles fit you.
@@ -82,7 +84,7 @@ The agent runs this for you from `skills/onboard.md`. It takes about 30 minutes.
 - **Cover letters.** When a form has a cover letter upload, the agent builds a PDF from your cover letter answer (`npm run letter`).
   It adds the company, the role, and one line about the company taken from a real source it opened, such as a blog post, a podcast, or funding news.
   If it cannot find a real source, it does not make one up. It stops and asks you.
-- **Checks.** Every letter and every written answer is checked for AI-sounding phrases, em dashes, and facts you marked as private, before it goes into a form.
+- **Checks.** Every letter and every written answer is checked for AI-sounding phrases and em dashes, plus facts you marked as private, before it goes into a form.
 
 ## How AGENTS.md drives the agent
 
@@ -101,12 +103,12 @@ The rules in `AGENTS.md` are hard rules: never guess a fact, one fresh tab per p
 
 ## How it gets better over time
 
-OpenApply keeps its memory in plain files on your machine, so it improves the more you use it.
+OpenApply keeps its memory in plain files on your machine, so approved corrections can be reused.
 
 - **Your answers improve.** When you edit an answer in a form, the agent reads your edited text back and saves it as the new approved answer, with a note on why. The next form uses your better version.
 - **Fill problems become rules.** Every fill is logged in `data/fill-log.jsonl` with any trap it hit. `node src/record/distill.mjs` lists traps that happen again and again but are not written down yet, so you can add them to `skills/ats-notes.md`.
 - **Real bugs become tests.** Every bug from a real run is replayed in `evals/regression.test.mjs`, so it cannot come back. Run `npm test` after any change.
-- **Your history prevents repeats.** Every application is recorded. The tool respects your per-company limits and never applies to the same role twice.
+- **Your history prevents repeats.** Every application is recorded. The tool checks recorded applications and enforces your per-company limits.
 - **Your company list grows.** Add companies with `npm run add-company -- <url>`. Boards that close are flagged on the next scrape.
 - **Job sites change.** When a site changes its form, the fixed scripts in `src/fill/browser/` and the notes in `skills/ats-notes.md` are the two places to update. The tests tell you if a fix broke something else.
 
@@ -115,7 +117,8 @@ OpenApply keeps its memory in plain files on your machine, so it improves the mo
 - **You submit.** By default the agent never clicks Submit. The fill scripts cannot click a submit button at all.
 - **No invented facts.** Every fact comes from your profile or your answers. A missing fact means a blank field and a flag for you, never a guess.
 - **Checked before you see it.** Every filled form is read back and checked against your profile. Every written answer is checked for AI-sounding phrases and for facts you marked as private.
-- **Legal boxes wait for you.** Consent, certification, and legal checkboxes, and video questions, are never filled.
+- **Legal boxes wait for you.** Consent and certification checkboxes are never filled.
+  Other legal checkboxes and video questions also wait for you.
 - **No duplicates.** A lock on each posting and per-company limits stop double applications.
 
 An optional, experimental setting lets the agent submit forms that have no essay questions, after a second check and your "yes" for the whole batch.
@@ -172,12 +175,14 @@ evals/               regression tests from real bugs
 ## FAQ
 
 **Which job sites does it support?**
-Ashby, Greenhouse, and Lever get full form handling.
-Workable, Recruitee, Personio, Teamtailor, and BambooHR are scraped for roles; the agent fills those forms with more help from you.
+Ashby and Greenhouse get full form handling, as does Lever.
+The agent also scrapes Workable and Recruitee for roles.
+It scrapes Personio, Teamtailor and BambooHR too, and fills those forms with more help from you.
 
 **Does it write my cover letters and essays?**
 It reuses answers you wrote and approved, and builds cover letter PDFs from your cover letter answer.
-When no answer fits a question, it drafts one from your profile only, marks it NEW, and shows it to you first.
+When no answer fits a question, it drafts one from your profile only.
+It marks the draft NEW and shows it to you first.
 
 **Can I use it with another coding agent?**
 The instructions are in plain `AGENTS.md`, but form filling needs the Claude in Chrome extension, so Claude Code is the supported setup.
